@@ -2,7 +2,8 @@ from fastapi import FastAPI
 from contextlib import asynccontextmanager
 
 from app.core.database import engine, Base
-from app.api.Person import router as PersonRouter
+from app.api.documents import router as documentsRouter
+from app.api.subjects import router as subjectsRouter
 
 from app.core.limiter import limiter
 from slowapi import _rate_limit_exceeded_handler
@@ -20,5 +21,6 @@ app.add_exception_handler(
 
 app.add_middleware(SlowAPIMiddleware)
 
-app.include_router(PersonRouter)
+app.include_router(documentsRouter)
+app.include_router(subjectsRouter)
 

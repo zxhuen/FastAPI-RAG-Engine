@@ -1,13 +1,11 @@
 from pydantic import BaseModel
 
-class PersonCreate(BaseModel):
-    last_name: str
-    first_name: str
-    middle_name: str | None = None
-    age: int
+class DocumentCreate(BaseModel):
+    title: str 
+    description: str
 
 
-class PersonResponse(BaseModel):
+class DocumentResponse(BaseModel):
     id: int
     last_name: str
     first_name: str

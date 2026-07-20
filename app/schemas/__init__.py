@@ -1,9 +1,16 @@
-from .Person import (
-    PersonCreate,
-    PersonResponse
+from .documents import (
+    DocumentCreate,
+    DocumentResponse,
+)
+
+from .subjects import (
+    subjectCreate,
+    subjectResponse
 )
 
 __all__ = [
-    "PersonCreate",
-    "PersonResponse"
+    "DocumentCreate",
+    "DocumentResponse",
+    "subjectCreate",
+    "subjectResponse"
 ]
