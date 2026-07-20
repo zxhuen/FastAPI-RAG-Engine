@@ -1,7 +1,9 @@
-from .Person import(
-    Person
-)
+from .Subject import Subject
+from .Chunk  import Chunk
+from .Document import Document
 
 __all__ = [
-    "Person",
+    "Subject",
+    "Chunk",
+    "Document"
 ]
