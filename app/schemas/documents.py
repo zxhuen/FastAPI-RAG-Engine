@@ -3,6 +3,7 @@ from pydantic import BaseModel
 class DocumentCreate(BaseModel):
     title: str 
     description: str
+    subject_name: str
 
 
 class DocumentResponse(BaseModel):

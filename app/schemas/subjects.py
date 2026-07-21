@@ -2,7 +2,6 @@ from pydantic import BaseModel
 
 class subjectCreate(BaseModel):
     name: str 
-    term: str
 
 
 class subjectResponse(BaseModel):
