@@ -17,7 +17,7 @@ class Chunk(Base):
         nullable=False
     )
 
-    page_number = Column(Integer, nullable=False)
+    page_number = Column(Integer, nullable=True)
     chunk_index = Column(Integer, nullable=False)
 
     content = Column(Text, nullable=False)

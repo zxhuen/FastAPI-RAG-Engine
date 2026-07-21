@@ -18,3 +18,11 @@ pytest
 
 slowapi
 rich
+
+pymupdf
+
+langchain-text-splitters
+
+ollama
+
+pgvector
