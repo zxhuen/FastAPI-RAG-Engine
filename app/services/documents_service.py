@@ -9,6 +9,8 @@ from app.models import Document
 
 from uuid import UUID, uuid4
 
+from app.core.status import DocumentStatus
+
 logger = logging.getLogger(__name__)
 
 async def upload_file(title: str, description: str, subject_name: str , file: UploadFile, db: Session):
@@ -54,6 +56,7 @@ async def upload_file(title: str, description: str, subject_name: str , file: Up
         subject_id = subjects.id,
         title = title,
         description = description,
+        status = DocumentStatus.PROCESSING,
         file_path = path
     )
 
@@ -71,5 +74,5 @@ async def upload_file(title: str, description: str, subject_name: str , file: Up
 
     return {
         "id": document_data.id,
-        "status": "UPLOADED"
+        "status": "document uploaded to DB, chunking process wil start now"
     }
