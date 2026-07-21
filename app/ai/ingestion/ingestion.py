@@ -9,7 +9,7 @@ from app.core.database import get_db
 from fastapi import Depends
 from app.core.status import DocumentStatus
 
-def ingestion(document: Document, db: Session = Depends(get_db)):
+def ingestion(document: Document, db: Session):
     try:
         parsed_pdf_string = parse_pdf_to_string(document.file_path)
 

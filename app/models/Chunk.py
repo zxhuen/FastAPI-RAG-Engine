@@ -2,6 +2,7 @@ from sqlalchemy import Column, Text, Integer, DateTime, ForeignKey, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 import uuid
+from pgvector.sqlalchemy import Vector
 
 from app.core.database import Base
 
@@ -21,6 +22,7 @@ class Chunk(Base):
     chunk_index = Column(Integer, nullable=False)
 
     content = Column(Text, nullable=False)
+    embedding = Column(Vector(768))
 
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(

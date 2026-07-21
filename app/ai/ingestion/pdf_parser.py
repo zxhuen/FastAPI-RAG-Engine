@@ -1,5 +1,5 @@
 from app.core.supabase_bucket import supabase
-import fritz
+import fitz
 
 def parse_pdf_to_string(filepath: str):
     pdf_bytes = (
@@ -8,7 +8,9 @@ def parse_pdf_to_string(filepath: str):
         .download(filepath)
     )
 
-    pdf = fritz.open(stream=pdf_bytes, filetype="pdf")
+    pdf = fitz.open(stream=pdf_bytes, filetype="pdf")
+
+    text = ""
 
     for page in pdf:
         text += page.get_text()

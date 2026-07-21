@@ -10,6 +10,7 @@ from app.models import Document
 from uuid import UUID, uuid4
 
 from app.core.status import DocumentStatus
+from app.ai.ingestion.ingestion import ingestion
 
 logger = logging.getLogger(__name__)
 
@@ -71,6 +72,8 @@ async def upload_file(title: str, description: str, subject_name: str , file: Up
         status_code=500,
         detail="Failed to save document."
         )
+    
+    ingestion(document_data, db)
 
     return {
         "id": document_data.id,
