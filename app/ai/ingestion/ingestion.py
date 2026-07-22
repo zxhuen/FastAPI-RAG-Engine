@@ -8,26 +8,29 @@ from sqlalchemy.orm import Session
 from app.core.database import get_db
 from fastapi import Depends
 from app.core.status import DocumentStatus
+from uuid import UUID
 
-def ingestion(document: Document, db: Session):
+def ingestion(filepath: str, id: UUID , db: Session):
     try:
-        parsed_pdf_string = parse_pdf_to_string(document.file_path)
+        parsed_pdf_string = parse_pdf_to_string(filepath)
+        print("1")
 
         clean_string = clean_pdf_string(parsed_pdf_string)
-
+        print("2")
         chunked_text_list = chunk_text(clean_string)
-
+        print("3")
         vector_list = generate_embedding(chunked_text_list)
-
+        print("4")
         for index, (chunk, vector) in enumerate(zip(chunked_text_list, vector_list)):
-            save_chunk(document.id, index, chunk, vector, db)
-        
-        document.status = DocumentStatus.READY
+            save_chunk(id, index, chunk, vector, db)
+        print("5")
+
         db.commit()
 
         return {
             "message": "ingestion completed"
         }
+        
 
     except Exception:
         db.rollback()

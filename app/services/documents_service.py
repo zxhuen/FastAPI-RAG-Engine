@@ -73,8 +73,8 @@ async def upload_file(title: str, description: str, subject_name: str , file: Up
         detail="Failed to save document."
         )
     
-    ingestion(document_data, db)
-
+    ingestion(document_data.file_path, document_data.id, db)
+    
     return {
         "id": document_data.id,
         "status": "document uploaded to DB, chunking process wil start now"
