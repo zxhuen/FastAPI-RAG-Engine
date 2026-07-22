@@ -9,6 +9,7 @@ from app.core.database import get_db
 from fastapi import Depends
 from app.core.status import DocumentStatus
 from uuid import UUID
+from app.services.status_change import change_status
 
 def ingestion(filepath: str, id: UUID , db: Session):
     try:
@@ -25,6 +26,8 @@ def ingestion(filepath: str, id: UUID , db: Session):
             save_chunk(id, index, chunk, vector, db)
         print("5")
 
+        docs = change_status(id, db)
+        docs.status = DocumentStatus.READY
         db.commit()
 
         return {

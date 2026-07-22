@@ -1,9 +1,6 @@
 from sqlalchemy.orm import Session
-from fastapi import HTTPException, UploadFile, File
 import logging  
-from app.core.supabase_bucket import supabase
-
-from app.schemas import subjectResponse, subjectCreate
+from app.schemas import subjectCreate
 from app.models import Subject
 
 logger = logging.getLogger(__name__)

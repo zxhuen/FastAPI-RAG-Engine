@@ -12,6 +12,9 @@ from uuid import UUID, uuid4
 from app.core.status import DocumentStatus
 from app.ai.ingestion.ingestion import ingestion
 
+from app.services.status_change import change_status
+from app.core.status import DocumentStatus
+
 logger = logging.getLogger(__name__)
 
 async def upload_file(title: str, description: str, subject_name: str , file: UploadFile, db: Session):
@@ -63,6 +66,7 @@ async def upload_file(title: str, description: str, subject_name: str , file: Up
 
     try:
         db.add(document_data)
+        document_data.status = DocumentStatus.PROCESSING
         db.commit()
         db.refresh(document_data)
     except Exception:
@@ -74,7 +78,7 @@ async def upload_file(title: str, description: str, subject_name: str , file: Up
         )
     
     ingestion(document_data.file_path, document_data.id, db)
-    
+
     return {
         "id": document_data.id,
         "status": "document uploaded to DB, chunking process wil start now"
