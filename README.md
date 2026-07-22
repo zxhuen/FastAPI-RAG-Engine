@@ -1,1 +1,1 @@
-### AI
+## docker compose up --build -d

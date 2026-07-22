@@ -26,3 +26,6 @@ langchain-text-splitters
 ollama
 
 pgvector
+
+celery
+redis

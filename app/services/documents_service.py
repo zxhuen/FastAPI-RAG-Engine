@@ -10,10 +10,10 @@ from app.models import Document
 from uuid import UUID, uuid4
 
 from app.core.status import DocumentStatus
-from app.ai.ingestion.ingestion import ingestion
 
 from app.services.status_change import change_status
 from app.core.status import DocumentStatus
+from app.tasks.process_document_task import process_document
 
 logger = logging.getLogger(__name__)
 
@@ -77,8 +77,8 @@ async def upload_file(title: str, description: str, subject_name: str , file: Up
         detail="Failed to save document."
         )
     
-    ingestion(document_data.file_path, str(document_data.id))
-
+    process_document.delay(document_data.file_path, str(document_data.id))
+    print("hi")
     return {
         "id": document_data.id,
         "status": "document uploaded to DB, chunking process wil start now"

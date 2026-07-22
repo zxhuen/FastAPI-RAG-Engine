@@ -4,7 +4,7 @@ from app.core.database import get_db
 from app.core.limiter import limiter
 
 from app.schemas import DocumentCreate, DocumentResponse
-from app.services import upload_file
+from app.services.documents_service import upload_file
 
 router = APIRouter(prefix="/Documents", tags=["Documents"])
 
