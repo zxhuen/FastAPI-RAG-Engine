@@ -77,7 +77,7 @@ async def upload_file(title: str, description: str, subject_name: str , file: Up
         detail="Failed to save document."
         )
     
-    ingestion(document_data.file_path, document_data.id, db)
+    ingestion(document_data.file_path, str(document_data.id))
 
     return {
         "id": document_data.id,

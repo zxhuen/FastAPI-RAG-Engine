@@ -10,8 +10,13 @@ from fastapi import Depends
 from app.core.status import DocumentStatus
 from uuid import UUID
 from app.services.status_change import change_status
+from app.core.database import SessionLocal
 
-def ingestion(filepath: str, id: UUID , db: Session):
+def ingestion(filepath: str, uid_id: str):
+    document_id = UUID(uid_id)
+
+    db = SessionLocal()
+
     try:
         parsed_pdf_string = parse_pdf_to_string(filepath)
         print("1")
@@ -23,10 +28,10 @@ def ingestion(filepath: str, id: UUID , db: Session):
         vector_list = generate_embedding(chunked_text_list)
         print("4")
         for index, (chunk, vector) in enumerate(zip(chunked_text_list, vector_list)):
-            save_chunk(id, index, chunk, vector, db)
+            save_chunk(document_id, index, chunk, vector, db)
         print("5")
 
-        docs = change_status(id, db)
+        docs = change_status(document_id, db)
         docs.status = DocumentStatus.READY
         db.commit()
 
@@ -38,6 +43,9 @@ def ingestion(filepath: str, id: UUID , db: Session):
     except Exception:
         db.rollback()
         raise
+
+    finally:
+        db.close()
     
 
 
