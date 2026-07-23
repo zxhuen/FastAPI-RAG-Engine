@@ -28,7 +28,9 @@ app.add_middleware(
         "http://127.0.0.1:5500",
         "http://localhost:5500",
         "http://127.0.0.1:3000",
-        "*"  # Allows all origins during local dev
+        "https://zxhuen.github.io",
+        "https://fastapi-rag-engine-gsxz.onrender.com"
+        ##"*"  Allows all origins during local dev
     ],
     allow_credentials=True,
     allow_methods=["*"],  # Allows GET, POST, OPTIONS, etc.
