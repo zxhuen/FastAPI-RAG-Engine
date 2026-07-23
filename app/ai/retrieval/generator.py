@@ -6,5 +6,5 @@ def generate_answer(prompt: str) -> str:
         contents=prompt,
     )
 
-    return response.text()
+    return response.text
 

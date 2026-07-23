@@ -4,7 +4,7 @@ import logging
 from app.core.supabase_bucket import supabase
 
 from app.schemas import DocumentCreate, DocumentResponse
-from app.Repository import list_subjects, find_subject_name
+from app.Repository.Subject_Repo import list_subjects, find_subject_name
 from app.models import Document
 
 from uuid import UUID, uuid4

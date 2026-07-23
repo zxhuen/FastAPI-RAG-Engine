@@ -9,9 +9,9 @@ def generate_embedding_string(question: str) -> list[float]:
             input = question
         )
     
-    return response["embeddings"]
+    return response["embeddings"][0]
 
 def search(question: list[float], subject_id: UUID, db: Session):
-    similar_chunks = find_similar_chunks(db, question, subject_id, subject_id)
+    similar_chunks = find_similar_chunks(db, question, subject_id)
 
     return similar_chunks   

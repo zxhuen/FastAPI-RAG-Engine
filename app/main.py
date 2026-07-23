@@ -4,7 +4,7 @@ from contextlib import asynccontextmanager
 from app.core.database import engine, Base
 from app.api.documents import router as documentsRouter
 from app.api.subjects import router as subjectsRouter
-
+from app.api.chat import router as chatRouter
 from app.core.limiter import limiter
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
@@ -23,4 +23,5 @@ app.add_middleware(SlowAPIMiddleware)
 
 app.include_router(documentsRouter)
 app.include_router(subjectsRouter)
+app.include_router(chatRouter)
 
