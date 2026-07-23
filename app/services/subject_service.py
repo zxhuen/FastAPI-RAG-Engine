@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 import logging  
 from app.schemas import subjectCreate
 from app.models import Subject
+from app.Repository.Subject_Repo import list_subjects
 
 logger = logging.getLogger(__name__)
 
@@ -16,6 +17,9 @@ def create_subject(subject: subjectCreate, db: Session):
     db.refresh(new_subject)
 
     return new_subject
+
+def list_all_subject(db: Session):
+    return list_subjects(db)
 
 
 

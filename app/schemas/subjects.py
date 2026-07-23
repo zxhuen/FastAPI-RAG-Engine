@@ -5,11 +5,7 @@ class subjectCreate(BaseModel):
 
 
 class subjectResponse(BaseModel):
-    id: int
-    last_name: str
-    first_name: str
-    middle_name: str | None = None
-    age: int
+    name: str
 
     class Config:
         from_attributes = True

@@ -7,3 +7,4 @@ def generate_embedding(chunk: list) -> list:
     )
 
     return response["embeddings"]
+

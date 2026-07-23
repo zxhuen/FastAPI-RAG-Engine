@@ -7,3 +7,5 @@ def list_subjects(db: Session):
 def find_subject_name(name: str, db: Session):
     return db.query(Subject).filter(Subject.name == name).first()
 
+
+
