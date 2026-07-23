@@ -23,7 +23,8 @@ def chat(question: str, db: Session, subject_id: UUID):
     response = generate_answer(prompt)
 
     return {
-        "answer": response
+        "answer": response,
+        "chunk_context": context
     }
 
 
