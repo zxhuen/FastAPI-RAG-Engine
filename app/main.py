@@ -10,7 +10,7 @@ from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from slowapi.middleware import SlowAPIMiddleware
 
-app = FastAPI(title="Backend template with alembic")
+app = FastAPI(title="school files RAG system")
 
 app.state.limiter = limiter
 

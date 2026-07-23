@@ -10,5 +10,5 @@ router = APIRouter(prefix="/Chat", tags=["Chat"])
 
 @router.post("/chat-with-bot")
 @limiter.limit("5/minute")
-def chat_gemini(request: Request, question: str, suject_id: UUID, db: Session = Depends(get_db)):
-    return chat(question, suject_id, db)
+def chat_gemini(request: Request, question: str, suject_id: UUID | None = None, db: Session = Depends(get_db)):
+    return chat(question, db, suject_id)
