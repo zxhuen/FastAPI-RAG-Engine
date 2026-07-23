@@ -29,3 +29,5 @@ pgvector
 
 celery
 redis
+
+google-genai
