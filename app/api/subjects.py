@@ -4,7 +4,7 @@ from app.core.database import get_db
 from app.core.limiter import limiter
 
 from app.schemas import subjectCreate
-from app.services import create_subject
+from app.services.subject_service import create_subject
 
 router = APIRouter(prefix="/Subjects", tags=["Subjects"])
 
