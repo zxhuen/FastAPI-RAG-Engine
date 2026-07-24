@@ -10,6 +10,7 @@ from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from slowapi.middleware import SlowAPIMiddleware
 from fastapi.middleware.cors import CORSMiddleware
+from app.api.login import router as loginRouter
 
 app = FastAPI(title="school files RAG system")
 
@@ -40,4 +41,5 @@ app.add_middleware(
 app.include_router(documentsRouter)
 app.include_router(subjectsRouter)
 app.include_router(chatRouter)
+app.include_router(loginRouter)
 
