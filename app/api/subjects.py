@@ -5,7 +5,8 @@ from app.core.limiter import limiter
 
 from app.schemas import subjectCreate, subjectResponse
 from app.services.subject_service import create_subject, list_all_subject
-
+from app.services.user_service import get_current_user
+from app.models import User
 router = APIRouter(prefix="/Subjects", tags=["Subjects"])
 
 @router.post("/add-subject")
@@ -14,6 +15,6 @@ def add_subject(request: Request, subject: subjectCreate, db: Session = Depends(
     return create_subject(subject, db)
 
 @router.get("/list-subject", response_model=list[subjectResponse])
-def list_subject(db: Session = Depends(get_db)):
+def list_subject(db: Session = Depends(get_db), user: User = Depends(get_current_user)):
     return list_all_subject(db)
 

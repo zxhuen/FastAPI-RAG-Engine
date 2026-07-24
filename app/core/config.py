@@ -5,6 +5,7 @@ class Settings(BaseSettings):
     SUPABASE_KEY: str
     DATABASE_URL: str
     GEMINI_API_KEY: str
+    URL: str
 
     class Config:
         env_file = ".env"

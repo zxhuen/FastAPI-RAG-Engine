@@ -3,7 +3,7 @@ from datetime import datetime
 from sqlalchemy import (
     Column,
     DateTime,
-    ForeignKey,
+    Numeric,
     Integer,
     String,
 )
@@ -17,10 +17,34 @@ class PremiumType(Base):
     __tablename__ = "premium_types"
 
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String(50), nullable=False, unique=True)
-    daily_limit = Column(Integer, nullable=False)
 
-    created_at = Column(DateTime, default=datetime.utcnow)
+    name = Column(
+        String(50),
+        nullable=False,
+        unique=True,
+    )
+
+    price = Column(
+        Numeric(10, 2),
+        nullable=False,
+        default=0.00,
+    )
+
+    daily_limit = Column(
+        Integer,
+        nullable=False,
+    )
+
+    max_input_tokens = Column(
+        Integer,
+        nullable=False,
+    )
+
+    created_at = Column(
+        DateTime,
+        default=datetime.utcnow,
+    )
+
     updated_at = Column(
         DateTime,
         default=datetime.utcnow,

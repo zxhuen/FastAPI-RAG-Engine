@@ -11,6 +11,7 @@ from slowapi.errors import RateLimitExceeded
 from slowapi.middleware import SlowAPIMiddleware
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.login import router as loginRouter
+from app.api.user import router as userRouter
 
 app = FastAPI(title="school files RAG system")
 
@@ -42,4 +43,5 @@ app.include_router(documentsRouter)
 app.include_router(subjectsRouter)
 app.include_router(chatRouter)
 app.include_router(loginRouter)
+app.include_router(userRouter)
 
