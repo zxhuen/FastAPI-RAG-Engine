@@ -31,3 +31,5 @@ celery
 redis
 
 google-genai
+
+python-jose[cryptography]

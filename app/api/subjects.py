@@ -13,7 +13,7 @@ router = APIRouter(prefix="/Subjects", tags=["Subjects"])
 def add_subject(request: Request, subject: subjectCreate, db: Session = Depends(get_db)):
     return create_subject(subject, db)
 
-@router.get("/list-suject", response_model=list[subjectResponse])
+@router.get("/list-subject", response_model=list[subjectResponse])
 def list_subject(db: Session = Depends(get_db)):
     return list_all_subject(db)
 

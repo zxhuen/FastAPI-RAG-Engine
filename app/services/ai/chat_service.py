@@ -3,12 +3,13 @@ from app.ai.retrieval.search import generate_embedding_string, search
 from app.ai.retrieval.prompt import prompt_builder
 from app.ai.retrieval.generator import generate_answer
 from uuid import UUID
+from app.schemas.chat import ChatCreate
 
-def chat(question: str, db: Session, subject_id: UUID):
+def chat(chat_payload: ChatCreate, db: Session):
 
-    embedding = generate_embedding_string(question)
+    embedding = generate_embedding_string(chat_payload.question)
 
-    similar_chunks = search(embedding,  db, subject_id)
+    similar_chunks = search(embedding,  db, chat_payload.subject_id)
 
     print(len(similar_chunks))
 
@@ -18,7 +19,7 @@ def chat(question: str, db: Session, subject_id: UUID):
 
     context = "\n\n".join(chunk.content for chunk in similar_chunks)
 
-    prompt = prompt_builder(context, question)
+    prompt = prompt_builder(context, chat_payload.question)
 
     response = generate_answer(prompt)
 
