@@ -1,4 +1,4 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from fastapi import HTTPException, Depends
 from app.core.supabase_bucket import supabase
 import logging  
@@ -25,6 +25,7 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
         user = (
             db.query(User)
             .filter(User.id == auth_user.id)
+            .options(joinedload(User.premium_type))
             .first()
         )
 
@@ -87,3 +88,5 @@ def login_user(token: str, db: Session):
             status_code=404,
             detail="Invalid or expired token."
         )
+
+        
