@@ -1,17 +1,19 @@
 from sqlalchemy.orm import Session, joinedload
 from fastapi import HTTPException, Depends
 from app.core.supabase_bucket import supabase
-import logging  
+import logging
 from app.schemas import subjectCreate
 from app.models import User, UserUsage
-from app.Repository.Subject_Repo import list_subjects 
+from app.Repository.Subject_Repo import list_subjects
 from app.core.security import oauth2_scheme
 from app.core.database import get_db
 
-
 logger = logging.getLogger(__name__)
 
-def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)) -> User:
+
+def get_current_user(
+    token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)
+) -> User:
     try:
         response = supabase.auth.get_user(token)
         auth_user = response.user
@@ -43,21 +45,15 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
             detail="Invalid or expired token.",
         )
 
+
 def login_user(token: str, db: Session):
     try:
         auth_user = supabase.auth.get_user(token).user
 
         if auth_user is None:
-            raise HTTPException(
-                status_code=404,
-                detail="Invalid token."
-            )
+            raise HTTPException(status_code=404, detail="Invalid token.")
 
-        user = (
-            db.query(User)
-            .filter(User.id == auth_user.id)
-            .first()
-        )
+        user = db.query(User).filter(User.id == auth_user.id).first()
 
         if user is None:
             user = User(
@@ -65,7 +61,7 @@ def login_user(token: str, db: Session):
                 email=auth_user.email,
                 display_name=auth_user.user_metadata.get("full_name", ""),
                 avatar_url=auth_user.user_metadata.get("avatar_url"),
-                premium_type_id=1,  
+                premium_type_id=1,
             )
 
             db.add(user)
@@ -82,11 +78,7 @@ def login_user(token: str, db: Session):
 
         return user
 
-    except Exception:
+    except Exception as e:
         db.rollback()
-        raise HTTPException(
-            status_code=404,
-            detail="Invalid or expired token."
-        )
-
-        
+        print(repr(e))
+        raise

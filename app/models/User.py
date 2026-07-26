@@ -12,6 +12,7 @@ from sqlalchemy.orm import relationship
 
 from app.core.database import Base
 
+
 class User(Base):
     __tablename__ = "users"
 
@@ -44,5 +45,11 @@ class User(Base):
         "UserUsage",
         back_populates="user",
         uselist=False,
+        cascade="all, delete-orphan",
+    )
+
+    flashcard_sets = relationship(
+        "FlashcardSet",
+        back_populates="user",
         cascade="all, delete-orphan",
     )

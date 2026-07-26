@@ -12,15 +12,13 @@ from slowapi.middleware import SlowAPIMiddleware
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.login import router as loginRouter
 from app.api.user import router as userRouter
+from app.api.flashcards import router as flashcardsRouter
 
 app = FastAPI(title="school files RAG system")
 
 app.state.limiter = limiter
 
-app.add_exception_handler(
-    RateLimitExceeded,
-    _rate_limit_exceeded_handler
-)
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 app.add_middleware(SlowAPIMiddleware)
 
@@ -31,8 +29,8 @@ app.add_middleware(
         "http://localhost:5500",
         "http://127.0.0.1:3000",
         "https://zxhuen.github.io",
-        "http://localhost:5173"
-        ##"*"  Allows all origins during local dev
+        "http://localhost:5173",
+        "*",  ##Allows all origins during local dev
     ],
     allow_credentials=True,
     allow_methods=["*"],  # Allows GET, POST, OPTIONS, etc.
@@ -44,4 +42,4 @@ app.include_router(subjectsRouter)
 app.include_router(chatRouter)
 app.include_router(loginRouter)
 app.include_router(userRouter)
-
+app.include_router(flashcardsRouter)
