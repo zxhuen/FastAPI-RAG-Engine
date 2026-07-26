@@ -4,12 +4,14 @@ from app.ai.retrieval.prompt import prompt_builder
 from app.ai.retrieval.generator import generate_answer
 from uuid import UUID
 from app.schemas.chat import ChatCreate
+from fastapi import UploadFile
 
-def chat(chat_payload: ChatCreate, db: Session):
+def chat(question: str, subject_id: str, db: Session, image_text: str | None = None):
+    parts = []
 
-    embedding = generate_embedding_string(chat_payload.question)
+    embedding = generate_embedding_string(question)
 
-    similar_chunks = search(embedding,  db, chat_payload.subject_id)
+    similar_chunks = search(embedding,  db, subject_id)
 
     print(len(similar_chunks))
 
@@ -17,9 +19,15 @@ def chat(chat_payload: ChatCreate, db: Session):
         print(chunk.chunk_index)
         print(chunk.content)
 
-    context = "\n\n".join(chunk.content for chunk in similar_chunks)
+    if image_text:
+        parts.append(image_text)
 
-    prompt = prompt_builder(context, chat_payload.question)
+    if similar_chunks:
+        parts.append("\n\n".join(chunk.content for chunk in similar_chunks))
+
+    context = "\n\n".join(parts)
+
+    prompt = prompt_builder(context, question)
 
     response = generate_answer(prompt)
 
@@ -27,6 +35,8 @@ def chat(chat_payload: ChatCreate, db: Session):
         "answer": response,
         "chunk_context": context
     }
+
+
 
 
 

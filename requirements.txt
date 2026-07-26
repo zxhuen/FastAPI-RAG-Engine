@@ -33,3 +33,6 @@ redis
 google-genai
 
 python-jose[cryptography]
+
+paddleocr 
+paddlepaddle
