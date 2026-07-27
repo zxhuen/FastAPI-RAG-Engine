@@ -18,6 +18,7 @@ from app.Repository.flashcard_repo import list_flashcard
 from app.schemas.flashcard import listFlashcardResponse
 from uuid import UUID
 from app.core.limiter import limiter
+from fastapi import Request
 
 router = APIRouter(
     prefix="/flashcards",
@@ -26,8 +27,9 @@ router = APIRouter(
 
 
 @router.post("/generate")
-@limiter.limit("3/hour")
+@limiter.limit("6/day")
 async def generate_flashcards(
+    request: Request,
     title: str = Form(...),
     file: UploadFile = File(...),
     user: User = Depends(get_current_user),

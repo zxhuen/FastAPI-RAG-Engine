@@ -8,6 +8,7 @@ from app.schemas.chat import ChatCreate
 from app.services.ai.ocr import image_to_text
 from app.services.user_service import get_current_user
 from app.models import User
+from app.services.validations.validations_service import check_usage
 
 router = APIRouter(prefix="/Chat", tags=["Chat"])
 
@@ -18,13 +19,19 @@ async def chat_gemini(
     request: Request,
     question: str = Form(...),
     subject_id: UUID = Form(...),
-    image: UploadFile | None = File(None),
+    images: list[UploadFile] = File(default=[]),
     db: Session = Depends(get_db),
     user: User = Depends(get_current_user),
 ):
     image_text = ""
 
-    if image:
-        image_text = await image_to_text(image)
-        print(image_text)
+    for image in images:
+        text = await image_to_text(image)
+        image_text += text + "\n"
+        check_usage(user, text, db)
+
+    check_usage(user, question, db)
+
+    db.commit()
+
     return chat(question, subject_id, db, image_text)

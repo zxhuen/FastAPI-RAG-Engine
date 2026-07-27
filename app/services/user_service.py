@@ -27,7 +27,7 @@ def get_current_user(
         user = (
             db.query(User)
             .filter(User.id == auth_user.id)
-            .options(joinedload(User.premium_type))
+            .options(joinedload(User.premium_type), joinedload(User.usage))
             .first()
         )
 
