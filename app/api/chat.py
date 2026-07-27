@@ -11,8 +11,9 @@ from app.models import User
 
 router = APIRouter(prefix="/Chat", tags=["Chat"])
 
+
 @router.post("/chat-with-bot")
-@limiter.limit("100/minute")
+@limiter.limit("5/minute")
 async def chat_gemini(
     request: Request,
     question: str = Form(...),
@@ -22,7 +23,7 @@ async def chat_gemini(
     user: User = Depends(get_current_user),
 ):
     image_text = ""
-    
+
     if image:
         image_text = await image_to_text(image)
         print(image_text)

@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from uuid import UUID
 
 
 class Flashcard(BaseModel):
@@ -11,5 +12,6 @@ class FlashcardResponse(BaseModel):
 
 
 class listFlashcardResponse(BaseModel):
+    id: UUID
     title: str
     flashcards: list[Flashcard]

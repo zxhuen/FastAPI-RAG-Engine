@@ -13,5 +13,17 @@ def list_flashcard(user: User, db: Session):
         .all()
     )
 
-    print(flashcard_sets)
     return flashcard_sets
+
+
+def delete_flashcard(user: User, flashcardset_id: UUID, db: Session):
+    flashcard_set = (
+        db.query(FlashcardSet)
+        .filter(
+            FlashcardSet.id == flashcardset_id,
+            FlashcardSet.user_id == user.id,
+        )
+        .first()
+    )
+
+    return flashcard_set

@@ -21,6 +21,7 @@ from app.models.FlashCardSet import FlashcardSet
 from app.models.FlashCard import Flashcard
 from app.models.User import User
 from app.schemas.flashcard import FlashcardResponse
+from app.Repository.flashcard_repo import delete_flashcard
 
 
 async def create_flashcard(title: str, file: UploadFile, user: User, db: Session):
@@ -65,3 +66,15 @@ async def create_flashcard(title: str, file: UploadFile, user: User, db: Session
     db.refresh(flashcard_set)
 
     return {"flashcard_set": flashcard_set, "flashcards": json_response.flashcards}
+
+
+def delete_flashcard_set(user: User, flashcardset_id: UUID, db: Session):
+    set = delete_flashcard(user, flashcardset_id, db)
+
+    if set is None:
+        raise HTTPException(status_code=404, detail="Flashcard set not found")
+
+    db.delete(set)
+    db.commit()
+
+    return {"message": "set successfuly deleted"}
