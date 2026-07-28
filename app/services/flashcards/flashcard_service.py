@@ -23,14 +23,17 @@ from app.schemas.flashcard import FlashcardResponse
 from app.Repository.flashcard_repo import delete_flashcard
 from app.services.flashcards.generate_flashcards import generate_answer
 from app.services.flashcards.strip import strip_response
+import magic
+from pathlib import Path
 
 
 async def create_flashcard(title: str, file: UploadFile, user: User, db: Session):
-    extracted_text = await extract_text(file)
+    if file.content_type == "application/pdf":
+        extracted_text = await extract_text(file)
 
-    prompt = generate_prompt(extracted_text)
+        prompt = generate_prompt(extracted_text)
 
-    response = generate_answer(prompt).strip()
+        response = generate_answer(prompt).strip()
 
     json_response = strip_response(response)
     flashcard_set = FlashcardSet(
