@@ -22,6 +22,7 @@ from app.models.User import User
 from app.schemas.flashcard import FlashcardResponse
 from app.Repository.flashcard_repo import delete_flashcard
 from app.services.flashcards.generate_flashcards import generate_answer
+from app.services.flashcards.strip import strip_response
 
 
 async def create_flashcard(title: str, file: UploadFile, user: User, db: Session):
@@ -29,8 +30,9 @@ async def create_flashcard(title: str, file: UploadFile, user: User, db: Session
 
     prompt = generate_prompt(extracted_text)
 
-    response = generate_answer(prompt)
+    response = generate_answer(prompt).strip()
 
+    json_response = strip_response(response)
     flashcard_set = FlashcardSet(
         user_id=user.id,
         title=title,
@@ -39,7 +41,7 @@ async def create_flashcard(title: str, file: UploadFile, user: User, db: Session
     db.add(flashcard_set)
     db.flush()
 
-    for flashcard in response.flashcards:
+    for flashcard in json_response.flashcards:
         db.add(
             Flashcard(
                 set_id=flashcard_set.id, front=flashcard.front, back=flashcard.back
@@ -52,7 +54,7 @@ async def create_flashcard(title: str, file: UploadFile, user: User, db: Session
 
     db.refresh(flashcard_set)
 
-    return {"flashcard_set": flashcard_set, "flashcards": response.flashcards}
+    return {"flashcard_set": flashcard_set, "flashcards": json_response.flashcards}
 
 
 def delete_flashcard_set(user: User, flashcardset_id: UUID, db: Session):
