@@ -4,6 +4,7 @@ from pydantic import BaseModel
 class PremiumType(BaseModel):
     name: str
     daily_limit: int
+    max_flashcardset: int
 
 
 class Usage(BaseModel):

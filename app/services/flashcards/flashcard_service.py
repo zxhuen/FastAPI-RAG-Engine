@@ -1,3 +1,4 @@
+from paddle.linalg import det
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, UploadFile, File
 import logging
@@ -20,7 +21,7 @@ from app.models.FlashCardSet import FlashcardSet
 from app.models.FlashCard import Flashcard
 from app.models.User import User
 from app.schemas.flashcard import FlashcardResponse
-from app.Repository.flashcard_repo import delete_flashcard
+from app.Repository.flashcard_repo import delete_flashcard, list_flashcard
 from app.services.flashcards.generate_flashcards import generate_answer
 from app.services.flashcards.strip import strip_response
 from pathlib import Path
@@ -29,6 +30,7 @@ from app.services.validations.validations_service import check_usage
 
 
 async def create_flashcard(title: str, file: UploadFile, user: User, db: Session):
+    check_flashcard_limit(user, db)
 
     if file.content_type == "application/pdf":
         pdf_validation(file)
@@ -78,3 +80,13 @@ def delete_flashcard_set(user: User, flashcardset_id: UUID, db: Session):
     db.commit()
 
     return {"message": "set successfuly deleted"}
+
+
+def check_flashcard_limit(user: User, db: Session):
+    set = len(list_flashcard(user, db))
+
+    if set >= user.premium_type.max_flashcardset:
+        raise HTTPException(
+            status_code=403,
+            detail="You have reached the maximum number of flashcard sets for your plan.",
+        )

@@ -35,7 +35,7 @@ class PremiumType(Base):
         nullable=False,
     )
 
-    max_input_tokens = Column(
+    max_flashcardset = Column(
         Integer,
         nullable=False,
     )

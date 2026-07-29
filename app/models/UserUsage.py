@@ -25,7 +25,7 @@ class UserUsage(Base):
     used_today = Column(Integer, default=0, nullable=False)
 
     last_reset_at = Column(
-        DateTime,
+        DateTime(timezone=True),
         default=lambda: datetime.now(UTC),
         nullable=False,
     )
