@@ -5,6 +5,7 @@ from app.ai.retrieval.generator import generate_answer
 from uuid import UUID
 from app.schemas.chat import ChatCreate
 from fastapi import UploadFile
+from app.services.validations.validations_service import check_usage
 
 def chat(question: str, subject_id: str, db: Session, image_text: str | None = None):
     parts = []

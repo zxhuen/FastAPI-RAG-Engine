@@ -1,8 +1,11 @@
+from email.policy import HTTP
+
 from fastapi import (
     APIRouter,
     Depends,
     File,
     Form,
+    HTTPException,
     UploadFile,
 )
 from sqlalchemy.orm import Session
@@ -35,6 +38,9 @@ async def generate_flashcards(
     user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
+    if user.usage.used_today >= user.premium_type.daily_limit:
+        raise HTTPException(status_code=400, detail="daily limit exceeded")
+
     return await create_flashcard(
         title=title,
         file=file,

@@ -36,3 +36,6 @@ python-jose[cryptography]
 
 paddleocr 
 paddlepaddle
+
+python-magic
+python-magic-bin

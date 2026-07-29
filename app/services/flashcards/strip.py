@@ -12,5 +12,5 @@ def strip_response(response: str):
         response = response[:-3]
 
     response = response.strip()
-
+    print(response)
     return FlashcardResponse.model_validate_json(response)
