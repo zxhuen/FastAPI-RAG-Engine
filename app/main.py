@@ -30,7 +30,7 @@ app.add_middleware(
         "http://127.0.0.1:3000",
         "https://zxhuen.github.io",
         "http://localhost:5173",
-        "*",  ##Allows all origins during local dev
+        "https://zxhuen.github.io",  ##Allows all origins during local dev
     ],
     allow_credentials=True,
     allow_methods=["*"],  # Allows GET, POST, OPTIONS, etc.

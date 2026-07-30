@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Request, File, UploadFile, Form, Depends
+from fastapi import APIRouter, Request, File, UploadFile, Form, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.core.database import get_db
 from app.core.limiter import limiter
@@ -9,6 +9,7 @@ from app.services.ai.ocr import image_to_text
 from app.services.user_service import get_current_user
 from app.models import User
 from app.services.validations.validations_service import check_usage
+from typing import Annotated
 
 router = APIRouter(prefix="/Chat", tags=["Chat"])
 
@@ -17,21 +18,37 @@ router = APIRouter(prefix="/Chat", tags=["Chat"])
 @limiter.limit("5/minute")
 async def chat_gemini(
     request: Request,
-    question: str = Form(...),
-    subject_id: UUID = Form(...),
-    images: list[UploadFile] = File(default=[]),
+    question: Annotated[str | None, Form()] = None,
+    subject_id: Annotated[UUID, Form()] = ...,
+    images: Annotated[list[UploadFile] | None, File()] = None,
     db: Session = Depends(get_db),
     user: User = Depends(get_current_user),
 ):
-    image_text = ""
+    question = (question or "").strip()
+    images = images or []
+
+    image_texts = []
 
     for image in images:
         text = await image_to_text(image)
-        image_text += text + "\n"
-        check_usage(user, text, db)
+        if text:
+            image_texts.append(text)
 
-    check_usage(user, question, db)
+    text_combined = "\n".join(image_texts)
 
+    if question:
+        if text_combined:
+            text_combined = f"{text_combined}\n{question}"
+        else:
+            text_combined = question
+
+    if not text_combined:
+        raise HTTPException(
+            status_code=400,
+            detail="You must provide either a question or at least one image.",
+        )
+
+    check_usage(user, text_combined, db)
     db.commit()
 
-    return chat(question, subject_id, db, image_text)
+    return chat(subject_id, db, text_combined)
