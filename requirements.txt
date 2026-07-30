@@ -38,4 +38,3 @@ paddleocr
 paddlepaddle
 
 python-magic
-python-magic-bin
