@@ -1,4 +1,3 @@
-from paddle.linalg import det
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, UploadFile, File
 import logging
