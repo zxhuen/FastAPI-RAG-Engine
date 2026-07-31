@@ -7,14 +7,18 @@ from app.schemas import subjectCreate, subjectResponse
 from app.services.subject_service import create_subject, list_all_subject
 from app.services.user_service import get_current_user
 from app.models import User
+
 router = APIRouter(prefix="/Subjects", tags=["Subjects"])
+
 
 @router.post("/add-subject")
 @limiter.limit("0/minute")
-def add_subject(request: Request, subject: subjectCreate, db: Session = Depends(get_db)):
+def add_subject(
+    request: Request, subject: subjectCreate, db: Session = Depends(get_db)
+):
     return create_subject(subject, db)
 
-@router.get("/list-subject", response_model=list[subjectResponse])
-def list_subject(db: Session = Depends(get_db), user: User = Depends(get_current_user)):
-    return list_all_subject(db)
 
+@router.get("/list-subject", response_model=list[subjectResponse])
+def list_subject(db: Session = Depends(get_db)):
+    return list_all_subject(db)
