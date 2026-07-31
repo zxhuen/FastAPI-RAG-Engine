@@ -38,8 +38,6 @@ async def create_flashcard(title: str, file: UploadFile, user: User, db: Session
 
         check_usage(user, extracted_text, db)
 
-        db.commit()
-
         prompt = generate_prompt(extracted_text)
 
         response = generate_answer(prompt).strip()
