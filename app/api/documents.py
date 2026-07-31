@@ -11,6 +11,6 @@ from app.models import User
 router = APIRouter(prefix="/Documents", tags=["Documents"])
 
 @router.post("/add-documents")
-@limiter.limit("0/minute")
-async def add_documents( request: Request, user: User = Depends(get_current_user), title: str = Form(...), description: str | None = Form(None), subject_name: str = Form(...), file: UploadFile = File(...), db: Session = Depends(get_db)):
+@limiter.limit("10/minute")
+async def add_documents( request: Request, title: str = Form(...), description: str | None = Form(None), subject_name: str = Form(...), file: UploadFile = File(...), db: Session = Depends(get_db)):
     return await upload_file(title, description, subject_name, file, db)

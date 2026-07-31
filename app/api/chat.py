@@ -23,7 +23,7 @@ async def chat_gemini(
     user: User = Depends(get_current_user),
 ):
 
-    return {"message": "under maintenance"}
+    ##return {"message": "under maintenance"}
 
     check_usage(user, question, db)
     db.commit()

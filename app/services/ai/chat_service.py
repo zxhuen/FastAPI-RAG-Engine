@@ -6,7 +6,7 @@ from uuid import UUID
 from app.schemas.chat import ChatCreate
 from fastapi import UploadFile, HTTPException
 from app.services.validations.validations_service import check_usage
-from app.ai.ingestion.embedder import generate_embedding
+from app.ai.ingestion.embedder import generate_embeddings
 
 
 def chat(
@@ -16,7 +16,7 @@ def chat(
 ):
     parts = []
 
-    embedding = generate_embedding(question)
+    embedding = generate_embeddings(question)
 
     similar_chunks = search(embedding, db, subject_id)
 
