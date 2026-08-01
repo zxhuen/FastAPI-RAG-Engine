@@ -14,6 +14,16 @@ def generate_embeddings(texts: list[str]):
     return [embedding.values for embedding in response.embeddings]
 
 
+def generate_embeddings_for_chat(texts: list[str]):
+    response = client.models.embed_content(
+        model="gemini-embedding-001",
+        contents=texts,
+        config={"output_dimensionality": 768},
+    )
+
+    return response.embeddings[0].values
+
+
 def pdf_to_clean_text(pdf_bytes: bytes) -> str:
     prompt = """
 You are a document extraction assistant.
