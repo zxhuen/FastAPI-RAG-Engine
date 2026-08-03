@@ -30,7 +30,7 @@ router = APIRouter(
 
 
 @router.post("/generate")
-@limiter.limit("50/day")
+@limiter.limit("3/day")
 async def generate_flashcards(
     request: Request,
     title: str = Form(...),
